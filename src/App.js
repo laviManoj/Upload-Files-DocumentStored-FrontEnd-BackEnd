@@ -5,6 +5,7 @@ const FileUploadForm = () => {
   const [file2, setFile2] = useState(null);
   const [file1Preview, setFile1Preview] = useState(null);
   const [file2Preview, setFile2Preview] = useState(null);
+  const [isUploaded, setIsUploaded] = useState(false);
 
   const handleFile1Change = (event) => {
     const selectedFile = event.target.files[0];
@@ -35,13 +36,15 @@ const FileUploadForm = () => {
     formData.append("file1", file1);
     formData.append("file2", file2);
 
-    fetch("http://localhost:5002/upload-files", {
+    fetch("http://localhost:5002/upload-file", {
       method: "POST",
-      body: formData
+      body: formData,
     })
       .then((response) => response.json())
       .then((data) => {
+        alert(data.message);
         console.log("Files uploaded successfully:", data);
+        setIsUploaded(true);
       })
       .catch((error) => {
         console.error("Error uploading files:", error);
@@ -55,18 +58,22 @@ const FileUploadForm = () => {
         <div>
           <label>Choose File 1:</label>
           <input type="file" onChange={handleFile1Change} />
-          {file1Preview && <img src={file1Preview} alt="File 1 Preview" />}
+          {file1Preview && <img src={file1Preview} alt="File 1 Preview" height={50} width={120}/>}
         </div>
 
         <div>
           <label>Choose File 2:</label>
           <input type="file" onChange={handleFile2Change} />
-          {file2Preview && <img src={file2Preview} alt="File 2 Preview" />}
+          {file2Preview && <img src={file2Preview} alt="File 2 Preview" height={50} width={120} />}
         </div>
 
-        <button type="button" onClick={handleSubmit}>
-          Upload
-        </button>
+        {!isUploaded ? (
+          <button type="button" onClick={handleSubmit}>
+            Upload
+          </button>
+        ) : (
+          <p>Files uploaded successfully. Submit button disabled.</p>
+        )}
       </form>
     </div>
   );
