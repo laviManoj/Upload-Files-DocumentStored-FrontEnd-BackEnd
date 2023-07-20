@@ -5,7 +5,8 @@ const FileUploadForm = () => {
   const [file2, setFile2] = useState(null);
   const [file1Preview, setFile1Preview] = useState(null);
   const [file2Preview, setFile2Preview] = useState(null);
-  const [isUploaded, setIsUploaded] = useState(false);
+  const [isUploaded, setIsUploaded] = useState(false);  //// uploaded files in the format specifications
+  
 
   const handleFile1Change = (event) => {
     const selectedFile = event.target.files[0];
@@ -72,7 +73,7 @@ const FileUploadForm = () => {
             Upload
           </button>
         ) : (
-          <p>Files uploaded successfully. Submit button disabled.</p>
+          <p>Files uploaded successfully.</p>
         )}
       </form>
     </div>
