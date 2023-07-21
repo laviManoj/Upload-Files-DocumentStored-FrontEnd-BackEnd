@@ -32,24 +32,27 @@ const FileUploadForm = () => {
     reader.readAsDataURL(selectedFile);
   };
 
-  const handleSubmit = () => {
-    const formData = new FormData();
-    formData.append("file1", file1);
-    formData.append("file2", file2);
+  const handleSubmit = (event) => {
+    event.preventDefault();
 
-    fetch("http://localhost:5002/upload-file", {
-      method: "POST",
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        alert(data.message);
-        console.log("Files uploaded successfully:", data);
-        setIsUploaded(true);
+    if (file1 && file2) {
+      const formData = new FormData();
+      formData.append("file1", file1);
+      formData.append("file2", file2); 
+
+      fetch("http://localhost:5000/upload-file", {
+        method: "POST",
+        body: formData,
       })
-      .catch((error) => {
-        console.error("Error uploading files:", error);
-      });
+        .then((response) => response.json())
+        .then((data) => {
+          alert(data.message)
+          console.log("File uploaded successfully:", data);
+        })
+        .catch((error) => {
+          console.error("Error uploading file:", error);
+        });
+    }
   };
 
   return (
