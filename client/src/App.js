@@ -1,6 +1,12 @@
 import React, { useState } from "react";
+import Navbar from "./components/Navbar";
+import { BrowserRouter as Router, Routes,Route } from 'react-router-dom';
+import ContactPage from './components/Contact';
 
-const FileUploadForm = () => {
+// import Navbar from ""
+
+
+const App = () => {
   const [file1, setFile1] = useState(null);
   const [file2, setFile2] = useState(null);
   const [file1Preview, setFile1Preview] = useState(null);
@@ -56,7 +62,15 @@ const FileUploadForm = () => {
   };
 
   return (
-    <div>
+    <Router>
+<div>
+    
+<Navbar />
+<Routes>
+          <Route path="/contact" element={<ContactPage />} />
+          {/* Add more routes for other pages */}
+        </Routes>
+    <div class="alert alert-success" role="alert" >
       <h1>File Upload</h1>
       <form>
         <div>
@@ -72,15 +86,15 @@ const FileUploadForm = () => {
         </div>
 
         {!isUploaded ? (
-          <button type="button" onClick={handleSubmit}>
-            Upload
-          </button>
+            <button type="button" class="btn btn-primary" onClick={handleSubmit}>Primary</button>
         ) : (
-          <p>Files uploaded successfully.</p>
+          <p >Files uploaded successfully.</p>
         )}
       </form>
     </div>
+    </div>
+    </Router>
   );
 };
 
-export default FileUploadForm;
+export default App;
