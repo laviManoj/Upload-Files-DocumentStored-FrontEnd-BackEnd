@@ -8,7 +8,7 @@ const routes = require('./routes/FileUpload')
 
 const app = express();
 const PORT = 5000;
-const url = 'mongodb://127.0.0.1:27017/ServerBank'
+// const url = 'mongodb://127.0.0.1:27017/ServerBank'
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
