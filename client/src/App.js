@@ -11,6 +11,7 @@ const App = () => {
   const [file2, setFile2] = useState(null);
   const [file3, setFile3] = useState(null);
   const [file4, setFile4] = useState(null);
+  const [webcamOn, setWebcamOn] = useState();
 
   const [file1Preview, setFile1Preview] = useState(null);
   const [file2Preview, setFile2Preview] = useState(null);
@@ -51,7 +52,6 @@ const App = () => {
   };
 
   useEffect(() => {
-    // Set Webcam configuration
     Webcam.set({
       width: 150,
       height: 100,
@@ -59,14 +59,21 @@ const App = () => {
       jpeg_quality: 90,
     });
 
-    // Attach Webcam to the 'camera' element
-    Webcam.attach("#camera");
+    if (webcamOn) {
+      Webcam.attach("#camera");
+    } else {
+      Webcam.reset();
+    }
 
-    // Clean up the Webcam instance when component unmounts
     return () => {
       Webcam.reset();
     };
-  }, []);
+  }, [webcamOn]);
+
+  const handleWebcamOff = () => {
+    // Detach the webcam from the 'camera' element
+    setWebcamOn(false);
+  };
 
   const takeSnap = () => {
     Webcam.snap(function (data_uri) {
@@ -135,14 +142,48 @@ const App = () => {
         </Routes>
         <div class="alert alert-success" role="alert">
           <h1>File Upload</h1>
-          <form>
+          <form onSubmit={handleSubmit}>
             {/* Choose file1 documents */}
+
+            <input
+                type="button"
+                name="takephoto"
+                id="take-photo"
+                class="takephoto-button"
+                value="Camera"
+                onClick={() => setWebcamOn(true)}
+              />
+
+            <div id="takephoto">
+            <button type="button" className="camera-close" id="camera-close">
+              X
+            </button>
+            <div className="camera" id="camera"></div>
+            <p>Take a picture and Upload</p>
+            <input
+              type="button"
+              value="Take Snapshot"
+              id="snap"
+              onClick={takeSnap}
+              onChange={handleFile1Change}
+            />
+
+            <div id="results"></div>
+            <button
+              type="button" 
+              className="takephoto-upload-tick"
+              id="takephoto-upload-tick"
+            >
+              ✓
+            </button>
+          </div>
+
             <div>
               <label>Choose File 1:</label>
-              <input type="file" onChange={handleFile1Change} />
-              {file1Preview && (
+              <input type="file" onChange={handleFile2Change} />
+              {file2Preview && (
                 <img
-                  src={file1Preview}
+                  src={file2Preview}
                   alt="File 1 Preview"
                   height={50}
                   width={120}
@@ -153,10 +194,10 @@ const App = () => {
             {/* Choose File2 documents */}
             <div>
               <label>Choose File 2:</label>
-              <input type="file" onChange={handleFile2Change} />
-              {file2Preview && (
+              <input type="file" onChange={handleFile3Change} />
+              {file3Preview && (
                 <img
-                  src={file2Preview}
+                  src={file3Preview}
                   alt="File 2 Preview"
                   height={50}
                   width={120}
@@ -164,13 +205,28 @@ const App = () => {
               )}
             </div>
 
+            <div>
+              <label>Choose File 2:</label>
+              <input type="file" onChange={handleFile4Change} />
+              {file4Preview && (
+                <img
+                  src={file4Preview}
+                  alt="File 2 Preview"
+                  height={50}
+                  width={120}
+                />
+              )}
+            </div>
+
+          
+
             {/* Upload and submit button  */}
 
             {!isUploaded ? (
               <button
                 type="button"
                 class="btn btn-primary"
-                onClick={handleSubmit}
+                onClick={handleWebcamOff}
               >
                 Primary
               </button>

@@ -64,6 +64,8 @@ const upload = multer({
 const uploadMultiple = upload.fields([
   { name: "file1", maxCount: 1 },
   { name: "file2", maxCount: 10 },
+  { name: "file3", maxCount: 1 },
+  { name: "file4", maxCount: 10 },
 ]);
 console.log(uploadMultiple);
 
